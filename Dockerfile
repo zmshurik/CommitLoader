@@ -6,6 +6,7 @@ RUN mkdir -p /commint_loader
 WORKDIR /commit_loader
 COPY Gemfile Gemfile.lock ./
 COPY . /commit_loader
+RUN bundle install
 
 EXPOSE 3000
 CMD bundle exec rails s -b '0.0.0.0' -p 3000
