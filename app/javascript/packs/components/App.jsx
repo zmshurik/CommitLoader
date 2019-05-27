@@ -3,11 +3,14 @@
 // of the page.
 
 import React from 'react'
+import LoadForm from './LoadForm'
 
 export default class App extends React.Component {
   render() {
     return (
-      <h3>Hello</h3>
+      <div className="container">
+        <LoadForm />
+      </div>
     )
   }
 }
