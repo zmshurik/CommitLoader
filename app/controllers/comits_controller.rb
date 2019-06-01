@@ -1,2 +1,0 @@
-class ComitsController < ApplicationController
-end

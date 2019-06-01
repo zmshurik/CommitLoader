@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ComitsController, type: :controller do
+RSpec.describe CommitsController, type: :controller do
   describe 'POST create' do
     before(:each) do
       stub_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits')
@@ -12,7 +12,7 @@ RSpec.describe ComitsController, type: :controller do
     end
 
     it 'has a 200 status code' do
-      post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
+      post :create, body: { owner: 'thoughtbot', repo: 'guides', author: '' }
       expect(response.status).to eq(200)
     end
 
