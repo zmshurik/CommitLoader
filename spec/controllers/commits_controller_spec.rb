@@ -19,10 +19,11 @@ RSpec.describe CommitsController, type: :controller do
       expect(response.body).to include 'Not found'
     end
 
-    # it 'should make request' do
-    #   expect(a_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits'))
-    #     .to have_been_made.once
-    # end
+    it 'should make request' do
+      post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
+      expect(a_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits'))
+        .to have_been_made.once
+    end
 
     it 'should load commits' do
       post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
