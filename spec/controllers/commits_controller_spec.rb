@@ -4,26 +4,25 @@ RSpec.describe CommitsController, type: :controller do
   describe 'POST create' do
     before(:each) do
       stub_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits')
-        .with(
-          body: { 'author' => '' },
-          headers: { 'Content-Type' => 'application/json' }
-        )
-        .to_return(body: file_fixture('commits.json').read)
+        .to_return(body: file_fixture('commits.json').read, headers: { 'Content-type' => 'application/json' })
+      stub_request(:get, 'https://api.github.com/repos/noname/guides/commits')
+        .to_return(status: 404, body: '{"message":"Not found"}', headers: { 'Content-type' => 'application/json' })
     end
 
     it 'has a 200 status code' do
-      post :create, body: { owner: 'thoughtbot', repo: 'guides', author: '' }
+      post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
       expect(response.status).to eq(200)
     end
 
-    it 'should make request' do
-      expect(a_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits')
-        .with(
-          body: { 'author' => '' },
-          headers: { 'Content-Type' => 'application/json' }
-        ))
-        .to have_been_made.once
+    it 'should return "Not found" for incorrect request' do
+      post :create, params: { owner: 'noname', repo: 'guides', author: '' }
+      expect(response.body).to include 'Not found'
     end
+
+    # it 'should make request' do
+    #   expect(a_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits'))
+    #     .to have_been_made.once
+    # end
 
     it 'should load commits' do
       post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
