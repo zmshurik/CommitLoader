@@ -37,6 +37,7 @@ export default class LoadForm extends React.Component {
             className="form-control"
             id="owner"
             placeholder="Owner"
+            required
             onChange={ this.handleOwnerChange }
             value={ this.state.owner }
           />
@@ -52,6 +53,7 @@ export default class LoadForm extends React.Component {
             className="form-control"
             id="repo"
             placeholder="Repository"
+            required
             onChange={ this.handleRepoChange }
             value={ this.state.repo }
           />
