@@ -1,0 +1,2 @@
+class ComitsController < ApplicationController
+end
