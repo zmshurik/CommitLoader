@@ -17,7 +17,7 @@ class CommitsController < ApplicationController
     case @response.status
     when 404
       { message: 'Not found', status: 'error' }
-    when 200 
+    when 200
       { message: '', status: 'success' }
     else
       { message: 'Unexpected error', status: 'error' }
