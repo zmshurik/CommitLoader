@@ -1,4 +1,8 @@
 class CommitsController < ApplicationController
+  def index
+    render json: Commit.all
+  end
+
   def create
     @response = HTTP.get(render_url, json: { 'author' => params[:author] })
     load_data if @response.status == 200
