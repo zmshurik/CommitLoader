@@ -9,6 +9,11 @@ class CommitsController < ApplicationController
     render json: render_response_body
   end
 
+  def destroy
+    Commit.destroy(params[:ids]) unless params[:ids].nil?
+    render json: { status: 'success' }
+  end
+
   private
 
   def render_url
