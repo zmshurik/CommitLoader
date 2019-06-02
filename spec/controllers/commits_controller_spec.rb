@@ -45,7 +45,7 @@ RSpec.describe CommitsController, type: :controller do
 
     it 'should return json' do
       get :index
-      expect(response.headers['Content-type']).to include 'json'
+      expect(response.headers['Content-Type']).to include 'json'
     end
   end
 end
