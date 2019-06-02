@@ -4,7 +4,7 @@ class CommitsController < ApplicationController
   end
 
   def create
-    @response = HTTP.get(render_url, json: { 'author' => params[:author] })
+    @response = HTTP.get(render_url)
     load_data if @response.status == 200
     render json: render_response_body
   end
@@ -19,7 +19,9 @@ class CommitsController < ApplicationController
   def render_url
     owner = params[:owner]
     repo = params[:repo]
-    "https://api.github.com/repos/#{owner}/#{repo}/commits"
+    author = params[:author]
+    base = "https://api.github.com/repos/#{owner}/#{repo}/commits"
+    author == '' ? base : "#{base}?author=#{author}"
   end
 
   def render_response_body
