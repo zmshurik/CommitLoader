@@ -36,4 +36,16 @@ RSpec.describe CommitsController, type: :controller do
       expect(Commit.count).to eq(30)
     end
   end
+
+  describe 'GET index' do
+    it 'has a 200 status code' do
+      get :index
+      expect(response.status).to eq(200)
+    end
+
+    it 'should return json' do
+      get :index
+      expect(response.headers['Content-type']).to include 'json'
+    end
+  end
 end
