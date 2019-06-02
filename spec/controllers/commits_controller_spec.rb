@@ -61,8 +61,7 @@ RSpec.describe CommitsController, type: :controller do
       post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
       ids = Commit.all.take(4).map(&:id)
       delete :destroy, params: { ids: ids }
-      expect(Commit.count).to eq(30 - 4)
-      expect(Commit.find(ids)).to rise_error(ActiveRecord::RecordNotFound)
+      expect(-> { Commit.find(ids) }).to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
