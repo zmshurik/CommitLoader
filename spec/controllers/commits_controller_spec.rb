@@ -48,4 +48,21 @@ RSpec.describe CommitsController, type: :controller do
       expect(response.headers['Content-Type']).to include 'json'
     end
   end
+
+  describe 'DELETE destroy' do
+    it 'has a 200 status code' do
+      delete :destroy, params: { ids: [] }
+      expect(response.status).to eq(200)
+    end
+
+    it 'should delete records' do
+      stub_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits')
+        .to_return(body: file_fixture('commits.json').read, headers: { 'Content-type' => 'application/json' })
+      post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
+      ids = Commit.all.take(4).map(&:id)
+      delete :destroy, params: { ids: ids }
+      expect(Commit.count).to eq(30 - 4)
+      expect(Commit.find(ids)).to rise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
