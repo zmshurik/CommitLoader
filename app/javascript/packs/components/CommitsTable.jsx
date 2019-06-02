@@ -48,7 +48,7 @@ export default class CommitsTable extends React.Component {
 
   deleteButton = (
     <div className="d-flex justify-content-end mb-2">
-      <button type="button" className="btn btn-danger" data-confirm="are you shoure?" onClick={this.deleteClickHandle}>Delete</button>
+      <button type="button" className="btn btn-danger" data-confirm="Are you sure?" onClick={this.deleteClickHandle}>Delete</button>
     </div>
   );
 
