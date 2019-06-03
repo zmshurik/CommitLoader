@@ -3,6 +3,7 @@
 // of the page.
 
 import React from 'react'
+import Paginate from 'react-js-pagination'
 import LoadForm from './LoadForm'
 import CommitsTable from './CommitsTable'
 import { fetch } from './Fetch';
@@ -11,7 +12,9 @@ export default class App extends React.Component {
   state = {
     isReloading: false,
     commits: [],
-    idsForDelete: []
+    idsForDelete: [],
+    currentPage: 1,
+    totalItems: 100
   };
 
   markClickHandle = id => ({ target }) => {
@@ -24,13 +27,25 @@ export default class App extends React.Component {
     }
   };
 
-  reloadCommits = () => {
-    this.setState({ isReloading: true });
-    fetch('GET', Routes.commits_path(), {}).then(response => {
+  deleteClickHandle = ({ target }) => {
+    target.blur();
+    fetch('DELETE', Routes.group_delete_path(), { ids: this.state.idsForDelete })
+      .then(() => {
+        this.reloadCommits(1);
+      });
+  };
+
+  reloadCommits = (page = this.state.currentPage) => {
+    this.setState({ 
+      isReloading: true,
+      currentPage: page,
+    });
+    fetch('GET', Routes.commits_path({ page }), {}).then(response => {
       this.setState({
         isReloading: false,
-        commits: response.data,
-        idsForDelete: []
+        commits: response.data.items,
+        idsForDelete: [],
+        totalItems: response.data.totalItems
       });
     });
   }
@@ -48,12 +63,21 @@ export default class App extends React.Component {
         </div>
         <hr />
         <h2 className="text-center m-2">Loaded commits</h2>
-        <CommitsTable 
+        <CommitsTable
           reloadCommits={this.reloadCommits}
+          markClickHandle={this.markClickHandle}
+          deleteClickHandle={this.deleteClickHandle}
           commits={this.state.commits}
           isReloading={this.state.isReloading}
-          markClickHandle={this.markClickHandle}
           idsForDelete={this.state.idsForDelete}
+        />
+        <Paginate
+          totalItemsCount={this.state.totalItems}
+          onChange={this.reloadCommits}
+          activePage={this.state.currentPage}
+          itemClass="page-item"
+          linkClass="page-link"
+          innerClass="pagination justify-content-center"
         />
       </div>
     )

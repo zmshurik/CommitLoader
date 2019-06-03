@@ -1,15 +1,6 @@
 import React from 'react'
-import { fetch } from './Fetch'
 
 export default class CommitsTable extends React.Component {
-
-  deleteClickHandle = ({ target }) => {
-    target.blur();
-    fetch('DELETE', Routes.group_delete_path(), { ids: this.props.idsForDelete })
-      .then(() => {
-        this.props.reloadCommits();
-      });
-  };
 
   loadRows = () => {
     return this.props.commits.map(commit => (
@@ -34,7 +25,7 @@ export default class CommitsTable extends React.Component {
 
   deleteButton = (
     <div className="d-flex justify-content-end mb-2">
-      <button type="button" className="btn btn-danger" data-confirm="Are you sure?" onClick={this.deleteClickHandle}>Delete</button>
+      <button type="button" className="btn btn-danger" data-confirm="Are you sure?" onClick={this.props.deleteClickHandle}>Delete</button>
     </div>
   );
 

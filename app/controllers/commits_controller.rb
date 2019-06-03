@@ -1,6 +1,11 @@
 class CommitsController < ApplicationController
   def index
-    render json: Commit.all
+    page = params[:page] || 1
+    answer = {
+      items: Commit.paginate(page: page),
+      totalItems: Commit.count
+    }
+    render json: answer
   end
 
   def create
