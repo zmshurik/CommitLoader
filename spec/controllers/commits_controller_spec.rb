@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe CommitsController, type: :controller do
+  AMOUNT_OF_RECORDS = 30
+
   before(:each) do
     stub_request(:get, 'https://api.github.com/repos/thoughtbot/guides/commits?per_page=100')
       .to_return(body: file_fixture('commits.json').read, headers: { 'Content-type' => 'application/json' })
@@ -9,6 +11,7 @@ RSpec.describe CommitsController, type: :controller do
     stub_request(:get, 'https://api.github.com/repos/noname/guides/commits?per_page=100')
       .to_return(status: 404, body: '{"message":"Not found"}', headers: { 'Content-type' => 'application/json' })
   end
+
   describe 'POST create' do
     it 'has a 200 status code' do
       post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
@@ -29,13 +32,13 @@ RSpec.describe CommitsController, type: :controller do
 
     it 'should load commits' do
       post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
-      expect(Commit.count).to eq(30)
+      expect(Commit.count).to eq(AMOUNT_OF_RECORDS)
     end
 
     it 'shoul delete old commits' do
       post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
       post :create, params: { owner: 'thoughtbot', repo: 'guides', author: '' }
-      expect(Commit.count).to eq(30)
+      expect(Commit.count).to eq(AMOUNT_OF_RECORDS)
     end
 
     it 'should return "Not found" for incorrect request' do
