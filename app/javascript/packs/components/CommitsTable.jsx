@@ -2,26 +2,12 @@ import React from 'react'
 import { fetch } from './Fetch'
 
 export default class CommitsTable extends React.Component {
-  state = {
-    idsForDelete: []
-  };
-
-  markClickHandle = id => ({ target }) => {
-    const ids = this.state.idsForDelete;
-    if (target.checked) {
-      this.setState({ idsForDelete: [...ids, id] });
-    } else {
-      const newIds = ids.filter((item_id) => item_id != id);
-      this.setState({ idsForDelete: newIds });
-    }
-  };
 
   deleteClickHandle = ({ target }) => {
     target.blur();
-    fetch('DELETE', Routes.group_delete_path(), { ids: this.state.idsForDelete })
+    fetch('DELETE', Routes.group_delete_path(), { ids: this.props.idsForDelete })
       .then(() => {
         this.props.reloadCommits();
-        this.setState({ idsForDelete: [] });
       });
   };
 
@@ -29,7 +15,7 @@ export default class CommitsTable extends React.Component {
     return this.props.commits.map(commit => (
       <tr key={commit.id}>
         <th scope="row">
-          <input type="checkbox" onClick={this.markClickHandle(commit.id)} />
+          <input type="checkbox" onClick={this.props.markClickHandle(commit.id)} />
         </th>
         <td>{commit.sha}</td>
         <td>{commit.author}</td>

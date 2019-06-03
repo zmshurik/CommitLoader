@@ -10,7 +10,18 @@ import { fetch } from './Fetch';
 export default class App extends React.Component {
   state = {
     isReloading: false,
-    commits: []
+    commits: [],
+    idsForDelete: []
+  };
+
+  markClickHandle = id => ({ target }) => {
+    const ids = this.state.idsForDelete;
+    if (target.checked) {
+      this.setState({ idsForDelete: [...ids, id] });
+    } else {
+      const newIds = ids.filter((item_id) => item_id != id);
+      this.setState({ idsForDelete: newIds });
+    }
   };
 
   reloadCommits = () => {
@@ -18,7 +29,8 @@ export default class App extends React.Component {
     fetch('GET', Routes.commits_path(), {}).then(response => {
       this.setState({
         isReloading: false,
-        commits: response.data
+        commits: response.data,
+        idsForDelete: []
       });
     });
   }
@@ -36,7 +48,13 @@ export default class App extends React.Component {
         </div>
         <hr />
         <h2 className="text-center m-2">Loaded commits</h2>
-        <CommitsTable reloadCommits={this.reloadCommits} commits={this.state.commits} isReloading={this.state.isReloading} />
+        <CommitsTable 
+          reloadCommits={this.reloadCommits}
+          commits={this.state.commits}
+          isReloading={this.state.isReloading}
+          markClickHandle={this.markClickHandle}
+          idsForDelete={this.state.idsForDelete}
+        />
       </div>
     )
   }
