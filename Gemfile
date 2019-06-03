@@ -64,6 +64,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'webpacker', '~> 3.5'
 gem 'webpacker-react'
-gem 'http'
+gem "octokit", "~> 4.0"
 gem 'js-routes'
 gem 'will_paginate', '~> 3.1.0'
