@@ -45,7 +45,8 @@ export default class LoadForm extends React.Component {
         this.setState({ isLoading: false })
         const { message, status } = response.data;
         if (status == 'success') {
-          this.props.reloadCommits();
+          const page = 1;
+          this.props.reloadCommits(page);
         } else {
           this.setState({ alert: {
             isShow: true,

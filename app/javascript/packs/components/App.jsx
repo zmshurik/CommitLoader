@@ -31,7 +31,7 @@ export default class App extends React.Component {
     target.blur();
     fetch('DELETE', Routes.group_delete_path(), { ids: this.state.idsForDelete })
       .then(() => {
-        this.reloadCommits(1);
+        this.reloadCommits();
       });
   };
 
